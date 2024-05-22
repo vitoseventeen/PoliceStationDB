@@ -38,10 +38,7 @@ public class Osoba {
     private String jmeno;
 
     public Osoba() {
-
     }
-
-
 
     public Osoba(String biometrickeUdaje, String pohlavi, Integer vek, LocalDate datumNarozeni , String prijmeni, String jmeno) {
         this.biometrickeUdaje = biometrickeUdaje;

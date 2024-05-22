@@ -14,6 +14,8 @@ public class OsobaDao extends BaseDao<Osoba, Integer> {
         super(Osoba.class);
     }
 
+
+
     public void createWithData(String biometrickeUdaje, String pohlavi, Integer vek, LocalDate datumNarozeni, String prijmeni, String jmeno) {
         Osoba osoba = new Osoba(biometrickeUdaje, pohlavi, vek, datumNarozeni, prijmeni, jmeno);
         getEntityManager().persist(osoba);
