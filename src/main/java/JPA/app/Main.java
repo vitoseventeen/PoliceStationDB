@@ -2,7 +2,7 @@ package JPA.app;
 
 import JPA.dao.OsobaDao;
 import JPA.dao.PolicistaDao;
-import JPA.entities.Oddeleni;
+import JPA.dao.ZlocinecDao;
 import JPA.entities.Osoba;
 
 import jakarta.persistence.EntityManager;
@@ -50,8 +50,8 @@ public class Main {
 
         PolicistaDao policistaDao = new PolicistaDao();
         policistaDao.setEntityManager(em);
-        policistaDao.create(new JPA.entities.Policista("99990", "M", 34, LocalDate.ofEpochDay(1990-11-11), "Norton", "Joe", "K9", "Oddeleni_020" , 22 , null));
-        policistaDao.create(new JPA.entities.Policista("88821", "M", 34, LocalDate.ofEpochDay(1990-11-11), "Tyson", "Mike", "Agent", "Oddeleni_013" , 44, null));
+        policistaDao.create(new JPA.entities.Policista("4343432", "M", 34, LocalDate.ofEpochDay(1990-11-11), "Norton", "Joe", "K9", "Oddeleni_020" , 22 , null));
+        policistaDao.create(new JPA.entities.Policista("2121232", "M", 34, LocalDate.ofEpochDay(1990-11-11), "Tyson", "Mike", "Agent", "Oddeleni_013" , 44, null));
         try {
             em.getTransaction().begin();
             policistaDao.updateNameByBiometrickeUdaje("222222", "Bob");
@@ -79,9 +79,38 @@ public class Main {
 
         // POLICISTA END
 
-        // DUKAZ
+        // ZLOCINEC
 
-        // DUKAZ END
+        ZlocinecDao zlocinecDao = new ZlocinecDao();
+        zlocinecDao.setEntityManager(em);
+        zlocinecDao.create("1111939", "F", 22, LocalDate.ofEpochDay(2002-12-12), "Hilfiger", "Anna", true, 165, 52);
+        zlocinecDao.create("2222299", "M", 33, LocalDate.ofEpochDay(1990-11-11), "Walker", "John", false, 180, 80);
+
+        zlocinecDao.findBySurnameAndName("Walker", "John");
+
+        zlocinecDao.findBySurnameAndName("Hilfiger", "Anna");
+
+        try {
+            em.getTransaction().begin();
+            zlocinecDao.updateNameByBiometrickeUdaje("2222299", "Bobbie");
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            System.out.println("No zlocinec found with the specified data.");
+        }
+
+        try {
+            em.getTransaction().begin();
+            zlocinecDao.deleteBySurnameAndName("Hilfiger", "Anna");
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            System.out.println("No zlocinec found with the specified data.");
+        }
+
+
+
+
+        // ZLOCINEC END
+
 
 
         closeEntityManager(em, emf);
