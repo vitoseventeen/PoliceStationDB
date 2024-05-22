@@ -26,6 +26,12 @@ public class Zlocinec extends Osoba {
 
     }
 
+    public Zlocinec(String biometrickeUdaje, String pohlavi, Integer vek, LocalDate datumNarozeni, String prijmeni, String jmeno, Boolean clenstviVGangu, Integer vyska, Integer hmotnost) {
+        super(biometrickeUdaje, pohlavi, vek, datumNarozeni, prijmeni, jmeno);
+        this.clenstviVGangu = clenstviVGangu;
+        this.vyska = vyska;
+        this.hmotnost = hmotnost;
+    }
 
     // Getters and Setters
     public Boolean getClenstviVGangu() {

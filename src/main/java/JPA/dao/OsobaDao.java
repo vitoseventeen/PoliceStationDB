@@ -1,7 +1,6 @@
 package JPA.dao;
 
 import JPA.entities.Osoba;
-import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 
 import java.time.LocalDate;
@@ -16,7 +15,7 @@ public class OsobaDao extends BaseDao<Osoba, Integer> {
 
 
 
-    public void createWithData(String biometrickeUdaje, String pohlavi, Integer vek, LocalDate datumNarozeni, String prijmeni, String jmeno) {
+    public void create(String biometrickeUdaje, String pohlavi, Integer vek, LocalDate datumNarozeni, String prijmeni, String jmeno) {
         Osoba osoba = new Osoba(biometrickeUdaje, pohlavi, vek, datumNarozeni, prijmeni, jmeno);
         getEntityManager().persist(osoba);
         System.out.println("Osoba " + prijmeni + jmeno + " was created.");
@@ -43,6 +42,13 @@ public class OsobaDao extends BaseDao<Osoba, Integer> {
                 .setParameter("prijmeni", prijmeni)
                 .setParameter("jmeno", jmeno)
                 .getResultList();
+    }
+
+    public void deleteByBiomData(String biomData) {
+        getEntityManager().createQuery("DELETE FROM Osoba o WHERE o.biometrickeUdaje = :biomData")
+                .setParameter("biomData", biomData)
+                .executeUpdate();
+        System.out.println("Osoba with data: " + biomData + " was deleted.");
     }
 
 
