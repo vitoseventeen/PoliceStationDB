@@ -5,6 +5,8 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "zlocinec", schema = "public", indexes = {
@@ -22,8 +24,16 @@ public class Zlocinec extends Osoba {
     @Column(name = "hmotnost", nullable = false)
     private Integer hmotnost;
 
-    public Zlocinec() {
+    @ManyToMany
+    @JoinTable(
+            name = "ma",
+            joinColumns = @JoinColumn(name = "osoba_id"),
+            inverseJoinColumns = @JoinColumn(name = "trest_id")
+    )
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Set<Trest> tresty = new HashSet<>();
 
+    public Zlocinec() {
     }
 
     public Zlocinec(String biometrickeUdaje, String pohlavi, Integer vek, LocalDate datumNarozeni, String prijmeni, String jmeno, Boolean clenstviVGangu, Integer vyska, Integer hmotnost) {
@@ -56,5 +66,13 @@ public class Zlocinec extends Osoba {
 
     public void setHmotnost(Integer hmotnost) {
         this.hmotnost = hmotnost;
+    }
+
+    public Set<Trest> getTresty() {
+        return tresty;
+    }
+
+    public void setTresty(Set<Trest> tresty) {
+        this.tresty = tresty;
     }
 }

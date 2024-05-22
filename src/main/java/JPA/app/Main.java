@@ -88,10 +88,12 @@ public class Main {
 
         // POLICISTA END
 
+
         // ZLOCINEC
 
         ZlocinecDao zlocinecDao = new ZlocinecDao();
         zlocinecDao.setEntityManager(em);
+
         try {
             em.getTransaction().begin();
             zlocinecDao.create("1111939", "F", 22, LocalDate.ofEpochDay(2002 - 12 - 12), "Hilfiger", "Anna", true, 165, 52);
