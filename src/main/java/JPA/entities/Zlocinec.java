@@ -26,9 +26,6 @@ public class Zlocinec extends Osoba {
 
     }
 
-    public Zlocinec(String biometrickeUdaje, String pohlavi, Integer vek, LocalDate datumNarozeni, String prijmeni, String jmeno) {
-        super(biometrickeUdaje, pohlavi, vek, datumNarozeni, prijmeni, jmeno);
-    }
 
     // Getters and Setters
     public Boolean getClenstviVGangu() {

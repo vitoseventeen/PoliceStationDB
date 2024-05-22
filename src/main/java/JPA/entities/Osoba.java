@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -40,11 +41,13 @@ public class Osoba {
 
     }
 
-    public Osoba(String biometrickeUdaje, String pohlavi, Integer vek, LocalDate datumNarozeni, String prijmeni, String jmeno) {
+
+
+    public Osoba(String biometrickeUdaje, String pohlavi, Integer vek, LocalDate datumNarozeni , String prijmeni, String jmeno) {
         this.biometrickeUdaje = biometrickeUdaje;
         this.pohlavi = pohlavi;
-        this.vek = vek;
         this.datumNarozeni = datumNarozeni;
+        this.vek = vek;
         this.prijmeni = prijmeni;
         this.jmeno = jmeno;
     }

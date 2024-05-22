@@ -13,42 +13,53 @@ import java.util.Random;
 
 public class Main {
     public static void main(String[] args) {
-        Random random = new Random();
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("ApplicationPU");
         EntityManager em = emf.createEntityManager();
 
 
+
         // OSOBA
+
         OsobaDao osobaDao = new OsobaDao();
         osobaDao.setEntityManager(em);
-        em.getTransaction().begin();
-        String biometricData = String.format("%09d", random.nextInt(1_000_000_000));
-        Osoba newOsoba = new Osoba(biometricData, "M", 25, LocalDate.of(1996, 5, 15), "Walker", "Vinnie");
-        osobaDao.create(newOsoba);
-        em.getTransaction().commit();
-        osobaDao.findByPrijmeni("Walker").forEach(osoba -> System.out.println("Old name: " + osoba.getJmeno()));
-        // Update operation
-        List<Osoba> osoby = osobaDao.findByPrijmeni("Walker");
-        if (!osoby.isEmpty()) {
-            em.getTransaction().begin();
-            Osoba osobaToUpdate = osoby.get(0);
-            osobaToUpdate.setJmeno("Johny");
-            osobaDao.update(osobaToUpdate);
-            em.getTransaction().commit();
-        } else {
-            System.out.println("No Osoby found with the specified biometric data.");
+        osobaDao.createWithData("555555555", "M", 34, LocalDate.ofEpochDay(1990-11-11), "Walker", "John");
+        osobaDao.createWithData("3333333333", "M", 25,LocalDate.ofEpochDay(1999-3-11) ,"Walker", "John");
+        List<Osoba> osoby = osobaDao.findAllBySurnameAndName("Walker", "John");
+        for (Osoba osoba : osoby) {
+            System.out.println(osoba.getPrijmeni() + " " + osoba.getJmeno());
         }
-        // Output updated Osoba
-        osobaDao.findByPrijmeni("Walker").forEach(osoba -> System.out.println("New name: " + osoba.getJmeno()));
-        //Delete all Osoba with the specified prijmeni
-        osobaDao.findByPrijmeni("Walker").forEach(osoba -> {
+       try {
+                em.getTransaction().begin();
+                osobaDao.updateNameByBiometrickeUdaje("555555555", "newName");
+                em.getTransaction().commit();
+            } catch (Exception e) {
+                System.out.println("No osoba found with the specified data.");
+            }
+        try {
             em.getTransaction().begin();
-            osobaDao.delete(osoba);
+            osobaDao.deleteBySurnameAndName("Walker", "John");
             em.getTransaction().commit();
-            System.out.println("Osoby with prijmeni " + osoba.getPrijmeni() + " deleted.");
-        });
-        // Close EntityManager and EntityManagerFactory
+        } catch (Exception e) {
+            System.out.println("No osoba found with the specifieddata.");
+        }
+
+        // OSOBA END
+        // ZLOCINEC
+
+
+
+        // ZLOCINEC END
+
+
+        closeEntityManager(em, emf);
+    }
+
+
+
+    public static void closeEntityManager(EntityManager em, EntityManagerFactory emf) {
         em.close();
         emf.close();
     }
+
+
 }
