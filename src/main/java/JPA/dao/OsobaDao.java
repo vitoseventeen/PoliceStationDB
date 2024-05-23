@@ -52,5 +52,9 @@ public class OsobaDao extends BaseDao<Osoba, Integer> {
     }
 
 
-
+    public List<Osoba> findByBiomData(String biomData) {
+        return getEntityManager().createQuery("SELECT o FROM Osoba o WHERE o.biometrickeUdaje = :biomData", Osoba.class)
+                .setParameter("biomData", biomData)
+                .getResultList();
+    }
 }

@@ -1,5 +1,6 @@
 package JPA.dao;
 
+import JPA.entities.Policista;
 import JPA.entities.Trest;
 import JPA.entities.Zlocinec;
 
@@ -10,6 +11,15 @@ public class ZlocinecDao extends BaseDao<Zlocinec, Integer> {
 
     public ZlocinecDao() {
         super(Zlocinec.class);
+    }
+
+    public List<Zlocinec> findByBiomData(String i) {
+        if (i == null) {
+            return null;
+        }
+        return getEntityManager().createQuery("SELECT p FROM Zlocinec p WHERE p.biometrickeUdaje = :biomData", Zlocinec.class)
+                .setParameter("biomData", i)
+                .getResultList();
     }
 
     public void create(String biometrickeUdaje, String pohlavi, Integer vek, LocalDate datumNarozeni, String prijmeni, String jmeno, Boolean clenstviVGangu, Integer vyska, Integer hmotnost) {
