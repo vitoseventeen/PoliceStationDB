@@ -2,8 +2,13 @@ package JPA.entities;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
+
 
 @Entity
 @Table(name = "zlocin", schema = "public", indexes = {
@@ -12,6 +17,7 @@ import java.time.LocalDate;
         @UniqueConstraint(name = "zlocin_cislo_pripadu_key", columnNames = {"cislo_pripadu"})
 })
 public class Zlocin {
+
     @Id
     @ColumnDefault("nextval('zlocin_zlocin_id_seq'::regclass)")
     @Column(name = "zlocin_id", nullable = false)
@@ -26,9 +32,15 @@ public class Zlocin {
     @Column(name = "popis", nullable = false, length = 200)
     private String popis;
 
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "nazev", nullable = false, referencedColumnName = "nazev")
     private Oddeleni nazev;
+
+    @ManyToMany(mappedBy = "spachaneZlociny")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Set<Zlocinec> zlocinci = new HashSet<>();
+
 
     public Integer getId() {
         return id;
@@ -68,6 +80,14 @@ public class Zlocin {
 
     public void setNazev(Oddeleni nazev) {
         this.nazev = nazev;
+    }
+
+    public Set<Zlocinec> getZlocinci() {
+        return zlocinci;
+    }
+
+    public void setZlocinci(Set<Zlocinec> zlocinci) {
+        this.zlocinci = zlocinci;
     }
 
 }
