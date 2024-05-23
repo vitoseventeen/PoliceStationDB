@@ -2,8 +2,12 @@ package JPA.entities;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "zlocin", schema = "public", indexes = {
@@ -29,6 +33,10 @@ public class Zlocin {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "nazev", nullable = false, referencedColumnName = "nazev")
     private Oddeleni nazev;
+
+    @ManyToMany(mappedBy = "zlociny")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Set<Zlocinec> zlocinci = new HashSet<>();
 
     public Integer getId() {
         return id;
@@ -68,6 +76,14 @@ public class Zlocin {
 
     public void setNazev(Oddeleni nazev) {
         this.nazev = nazev;
+    }
+
+    public Set<Zlocinec> getZlocinci() {
+        return zlocinci;
+    }
+
+    public void setZlocinci(Set<Zlocinec> zlocinci) {
+        this.zlocinci = zlocinci;
     }
 
 }

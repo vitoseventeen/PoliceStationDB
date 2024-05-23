@@ -24,9 +24,8 @@ public class Main {
         ZlocinecDao zlocinecDao = new ZlocinecDao();
 
         try {
+
             em.getTransaction().begin();
-
-
             // POLICISTA
             policistaDao.setEntityManager(em);
             policistaDao.create("904092190", "M", 34, LocalDate.of(1990, 11, 11), "Norton", "Joe", "FBI", "Oddeleni_020", 7, null);
@@ -36,6 +35,8 @@ public class Main {
             }
             policistaDao.updateNameByBiometrickeUdaje("904092190", "Jack");
             policistaDao.deleteByBiomData("904092190");
+
+            System.out.println("---------------------TRANZAKCE-----------------------------");
 
             //tranzakce z CP4
             try {
@@ -59,6 +60,7 @@ public class Main {
             //konec tranzakce
 
             // OSOBA
+            System.out.println("---------------------OSOBA-----------------------------");
             osobaDao.setEntityManager(em);
             osobaDao.create("129049012", "M", 34, LocalDate.of(1990, 11, 11), "Franklin", "Ben");
             List<Osoba> osoby = osobaDao.findByBiomData("129049012");
@@ -68,6 +70,8 @@ public class Main {
             osobaDao.updateNameByBiometrickeUdaje("129049012", "John");
             osobaDao.deleteByBiomData("129049012");
 
+
+            System.out.println("---------------------ZLOCINEC-----------------------------");
             // ZLOCINEC
             zlocinecDao.setEntityManager(em);
             zlocinecDao.create("9430289991", "M", 31, LocalDate.of(1993, 12, 12), "Hilfiger", "Tommy", true, 178, 74);
@@ -79,6 +83,8 @@ public class Main {
             zlocinecDao.deleteByBiomData("9430289991");
 
             em.getTransaction().commit();
+
+            System.out.println("---------------------END-----------------------------");
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());
             if (em.getTransaction().isActive()) {
@@ -88,7 +94,6 @@ public class Main {
             closeEntityManager(em, emf);
         }
     }
-
 
 
     public static void closeEntityManager(EntityManager em, EntityManagerFactory emf) {

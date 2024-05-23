@@ -59,4 +59,5 @@ public class Trest {
     public void setZlocinci(Set<Zlocinec> zlocinci) {
         this.zlocinci = zlocinci;
     }
+
 }
