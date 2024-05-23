@@ -33,6 +33,15 @@ public class Zlocinec extends Osoba {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<Trest> tresty = new HashSet<>();
 
+    @ManyToMany
+    @JoinTable(
+            name = "spacha",
+            joinColumns = @JoinColumn(name = "osoba_id"),
+            inverseJoinColumns = @JoinColumn(name = "zlocin_id")
+    )
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Set<Zlocin> zlociny = new HashSet<>();
+
     public Zlocinec() {
     }
 
@@ -55,6 +64,15 @@ public class Zlocinec extends Osoba {
     public Integer getVyska() {
         return vyska;
     }
+
+    public Set<Zlocin> getZlociny() {
+        return zlociny;
+    }
+
+    public void setZlociny(Set<Zlocin> zlociny) {
+        this.zlociny = zlociny;
+    }
+
 
     public void setVyska(Integer vyska) {
         this.vyska = vyska;
