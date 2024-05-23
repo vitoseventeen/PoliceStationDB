@@ -24,6 +24,17 @@ public class Zlocinec extends Osoba {
     @Column(name = "hmotnost", nullable = false)
     private Integer hmotnost;
 
+
+    @ManyToMany(mappedBy = "spachatele")
+    @JoinTable(
+            name = "spacha",
+            joinColumns = @JoinColumn(name = "osoba_id"),
+            inverseJoinColumns = @JoinColumn(name = "zlocin_id")
+    )
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Set<Zlocin> spachaneZlociny = new HashSet<>();
+
+
     @ManyToMany
     @JoinTable(
             name = "ma",
@@ -92,5 +103,13 @@ public class Zlocinec extends Osoba {
 
     public void setTresty(Set<Trest> tresty) {
         this.tresty = tresty;
+    }
+
+    public Set<Zlocin> getSpachaneZlociny() {
+        return spachaneZlociny;
+    }
+
+    public void setSpachaneZlociny(Set<Zlocin> spachaneZlociny) {
+        this.spachaneZlociny = spachaneZlociny;
     }
 }
