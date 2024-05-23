@@ -4,8 +4,8 @@ import JPA.dao.OsobaDao;
 import JPA.dao.PolicistaDao;
 import JPA.dao.ZlocinecDao;
 import JPA.entities.Osoba;
-
 import JPA.entities.Policista;
+import JPA.entities.Zlocin;
 import JPA.entities.Zlocinec;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -19,24 +19,15 @@ public class Main {
 
     private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("ApplicationPU");
     private static EntityManager em = emf.createEntityManager();
-    public static void main(String[] args) {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("ApplicationPU");
-        EntityManager em = emf.createEntityManager();
-        try {
 
-            // POLICISTA
+    public static void main(String[] args) {
+        try {
+            System.out.println("---------------------START-----------------------------");
+            tranzakceCP4();
+            printCriminalsAndCrimes();
             crudPolicista();
             crudOsoba();
             crudZlocinec();
-            tranzakceCP4();
-
-            //tranzakce z CP4
-
-
-            // osoba
-
-            //zlocinec
-
 
             System.out.println("---------------------END-----------------------------");
         } catch (Exception e) {
@@ -49,21 +40,17 @@ public class Main {
         }
     }
 
-
     public static void closeEntityManager(EntityManager em, EntityManagerFactory emf) {
         em.close();
         emf.close();
     }
 
-
     public static EntityManager getEntityManager() {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("ApplicationPU");
         return emf.createEntityManager();
-
     }
 
     public static void crudZlocinec() {
-
         em.getTransaction().begin();
 
         ZlocinecDao zlocinecDao = new ZlocinecDao();
@@ -79,7 +66,6 @@ public class Main {
         zlocinecDao.deleteByBiomData("9430289991");
 
         em.getTransaction().commit();
-
     }
 
     public static void crudOsoba() {
@@ -97,11 +83,11 @@ public class Main {
         osobaDao.deleteByBiomData("129049012");
 
         em.getTransaction().commit();
-
     }
 
     public static void tranzakceCP4() {
-
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("ApplicationPU");
+        EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
 
         System.out.println("---------------------TRANZAKCE-----------------------------");
@@ -128,6 +114,7 @@ public class Main {
     public static void crudPolicista() {
         em.getTransaction().begin();
 
+        System.out.println("---------------------POLICISTA-----------------------------");
         PolicistaDao policistaDao = new PolicistaDao();
         policistaDao.setEntityManager(em);
         policistaDao.create("31313141", "M", 34, LocalDate.of(1990, 11, 11), "Norton", "Joe", "FBI", "Oddeleni_020", 7, null);
@@ -139,6 +126,30 @@ public class Main {
         policistaDao.deleteByBiomData("31313141");
 
         em.getTransaction().commit();
+    }
 
+    public static void printCriminalsAndCrimes() {
+
+        System.out.println("---------------------CRIMINALS WITH CRIMES-----------------------------");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("ApplicationPU");
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+
+        ZlocinecDao zlocinecDao = new ZlocinecDao();
+        zlocinecDao.setEntityManager(em);
+
+        List<Zlocinec> zlocinci = zlocinecDao.findAllWithCrimes();
+
+        System.out.println("Criminals and their crimes:");
+        for (Zlocinec zlocinec : zlocinci) {
+            if (!zlocinec.getZlociny().isEmpty()) {
+                System.out.printf(zlocinec.getPrijmeni() + " " + zlocinec.getJmeno() + ".");
+                for (Zlocin zlocin : zlocinec.getZlociny()) {
+                    System.out.println(" Zlocin: " + zlocin.getPopis());
+                }
+            }
+        }
+
+        em.getTransaction().commit();
     }
 }
