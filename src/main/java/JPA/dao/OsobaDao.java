@@ -18,7 +18,7 @@ public class OsobaDao extends BaseDao<Osoba, Integer> {
     public void create(String biometrickeUdaje, String pohlavi, Integer vek, LocalDate datumNarozeni, String prijmeni, String jmeno) {
         Osoba osoba = new Osoba(biometrickeUdaje, pohlavi, vek, datumNarozeni, prijmeni, jmeno);
         getEntityManager().persist(osoba);
-        System.out.println("Osoba " + prijmeni + jmeno + " was created.");
+        System.out.println("Osoba " + prijmeni + " " + jmeno + " was created.");
     }
 
     public void updateNameByBiometrickeUdaje(String biometrickeUdaje, String jmeno) {
@@ -52,5 +52,9 @@ public class OsobaDao extends BaseDao<Osoba, Integer> {
     }
 
 
-
+    public List<Osoba> findByBiomData(String newosoba) {
+        return getEntityManager().createQuery("SELECT o FROM Osoba o WHERE o.biometrickeUdaje = :biomData", Osoba.class)
+                .setParameter("biomData", newosoba)
+                .getResultList();
+    }
 }

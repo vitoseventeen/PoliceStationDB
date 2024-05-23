@@ -2,14 +2,21 @@ package JPA.dao;
 
 import JPA.entities.Osoba;
 import JPA.entities.Policista;
-import jakarta.persistence.EntityManager;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class PolicistaDao extends BaseDao<Policista, Integer> {
 
     public PolicistaDao() {
         super(Policista.class);
+    }
+
+
+    public void create(String biometrickeUdaje, String pohlavi, Integer vek, LocalDate datumNarozeni, String prijmeni, String jmeno, String specializace, String nazevOddeleni, Integer pocetLetSluzby, String idNadrizeny) {
+        Policista policista = new Policista(biometrickeUdaje, pohlavi, vek, datumNarozeni, prijmeni, jmeno, specializace, nazevOddeleni, pocetLetSluzby, idNadrizeny);
+        getEntityManager().persist(policista);
+        System.out.println("Policista " + prijmeni + " " + jmeno + " was created.");
     }
 
     public List<Policista> findBySpecializace(String specializace) {
@@ -41,14 +48,13 @@ public class PolicistaDao extends BaseDao<Policista, Integer> {
         System.out.println("Policista with data: " + biomData + " New name is: " + name);
     }
 
-    public void findByBiomData(String i) {
+    public List<Policista> findByBiomData(String i) {
         if (i == null) {
-            return;
+            return null;
         }
-        getEntityManager().createQuery("SELECT p FROM Policista p WHERE p.biometrickeUdaje = :biomData", Osoba.class)
+        return getEntityManager().createQuery("SELECT p FROM Policista p WHERE p.biometrickeUdaje = :biomData", Policista.class)
                 .setParameter("biomData", i)
-                .getSingleResult();
-        System.out.println("Policista with data: " + i + " was found.");
+                .getResultList();
     }
 
     public void deleteByBiomData(String biomData) {

@@ -83,4 +83,10 @@ public class ZlocinecDao extends BaseDao<Zlocinec, Integer> {
                 .setParameter("jmeno", jmeno)
                 .getResultList();
     }
+
+    public List<Zlocinec> findByBiomData(String zlod1) {
+        return getEntityManager().createQuery("SELECT z FROM Zlocinec z WHERE z.biometrickeUdaje = :biomData", Zlocinec.class)
+                .setParameter("biomData", zlod1)
+                .getResultList();
+    }
 }
