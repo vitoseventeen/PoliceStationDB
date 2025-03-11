@@ -1,0 +1,1 @@
+Kriminální archiv je databáze pro sběr informací o zločinech, podezřelých a odsouzených osobách, důkazech a svědcích. Sleduje stav vyšetřování, obsahuje identifikační údaje a vztahy mezi účastníky zločinu.
